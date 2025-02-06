@@ -5,10 +5,10 @@
     <title>Circular Countdown Timer</title>
     <style>
         *{
-          margin:0;
-          padding:0;
-          box-sizing:border-box;
-         }
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             display: flex;
             justify-content: center;
@@ -21,21 +21,23 @@
         .countdown-container {
             display: flex;
             gap: 20px;
+            width: 50%; /* Set container to occupy 50% of the screen width */
         }
         .countdown-item {
+            flex: 1; /* Evenly distribute space between items */
             display: flex;
             flex-direction: column;
             align-items: center;
         }
         .countdown-circle {
             position: relative;
-            width: 120px;
-            height: 120px;
+            width: 100%; /* Keep width responsive within the container */
+            height: 200px; /* Set circle height to 200px */
         }
         .countdown-circle svg {
             position: relative;
-            width: 120px;
-            height: 120px;
+            width: 100%;
+            height: 100%;
             transform: rotate(-90deg);
         }
         .countdown-circle circle {
@@ -47,7 +49,7 @@
         }
         .countdown-circle circle:nth-child(2) {
             stroke: #007bff;
-            stroke-dasharray: 339.292;
+            stroke-dasharray: calc(2 * 3.1416 * 90); /* Circumference of the circle */
             stroke-dashoffset: 0;
             transition: stroke-dashoffset 1s linear;
         }
@@ -65,28 +67,14 @@
             font-size: 16px;
             color: #333;
         }
-
-        /* Media Query for Smaller Screens */
+        /* Responsive adjustments */
         @media (max-width: 768px) {
             .countdown-container {
-                gap: 10px;
+                flex-direction: column;
+                width: 80%;
             }
-            .countdown-circle {
-                width: 60px;
-                height: 60px;
-            }
-            .countdown-circle svg {
-                width: 60px;
-                height: 60px;
-            }
-            .countdown-circle circle {
-                stroke-width: 6;
-            }
-            .countdown-time {
-                font-size: 16px;
-            }
-            .countdown-label {
-                font-size: 12px;
+            .countdown-item {
+                margin-bottom: 20px;
             }
         }
     </style>
@@ -95,9 +83,9 @@
     <div class="countdown-container">
         <div class="countdown-item">
             <div class="countdown-circle">
-                <svg>
-                    <circle cx="60" cy="60" r="54"></circle>
-                    <circle cx="60" cy="60" r="54" id="days-progress"></circle>
+                <svg viewBox="0 0 200 200">
+                    <circle cx="100" cy="100" r="90"></circle>
+                    <circle cx="100" cy="100" r="90" id="days-progress"></circle>
                 </svg>
                 <div class="countdown-time" id="days">00</div>
             </div>
@@ -105,9 +93,9 @@
         </div>
         <div class="countdown-item">
             <div class="countdown-circle">
-                <svg>
-                    <circle cx="60" cy="60" r="54"></circle>
-                    <circle cx="60" cy="60" r="54" id="hours-progress"></circle>
+                <svg viewBox="0 0 200 200">
+                    <circle cx="100" cy="100" r="90"></circle>
+                    <circle cx="100" cy="100" r="90" id="hours-progress"></circle>
                 </svg>
                 <div class="countdown-time" id="hours">00</div>
             </div>
@@ -115,9 +103,9 @@
         </div>
         <div class="countdown-item">
             <div class="countdown-circle">
-                <svg>
-                    <circle cx="60" cy="60" r="54"></circle>
-                    <circle cx="60" cy="60" r="54" id="minutes-progress"></circle>
+                <svg viewBox="0 0 200 200">
+                    <circle cx="100" cy="100" r="90"></circle>
+                    <circle cx="100" cy="100" r="90" id="minutes-progress"></circle>
                 </svg>
                 <div class="countdown-time" id="minutes">00</div>
             </div>
@@ -125,9 +113,9 @@
         </div>
         <div class="countdown-item">
             <div class="countdown-circle">
-                <svg>
-                    <circle cx="60" cy="60" r="54"></circle>
-                    <circle cx="60" cy="60" r="54" id="seconds-progress"></circle>
+                <svg viewBox="0 0 200 200">
+                    <circle cx="100" cy="100" r="90"></circle>
+                    <circle cx="100" cy="100" r="90" id="seconds-progress"></circle>
                 </svg>
                 <div class="countdown-time" id="seconds">00</div>
             </div>
@@ -138,31 +126,30 @@
         // Calculate the target date 2 days from now
         const now = new Date();
         const targetDate = new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000).getTime();
+
         const daysElement = document.getElementById('days');
         const hoursElement = document.getElementById('hours');
         const minutesElement = document.getElementById('minutes');
         const secondsElement = document.getElementById('seconds');
+
         const daysProgress = document.getElementById('days-progress');
         const hoursProgress = document.getElementById('hours-progress');
         const minutesProgress = document.getElementById('minutes-progress');
         const secondsProgress = document.getElementById('seconds-progress');
-        
-        // Function to get total length dynamically
-        function getTotalLength(circle) {
-            return 2 * Math.PI * circle.r.baseVal.value;
+
+        // Function to get circumference of circle
+        function getCircumference(radius) {
+            return 2 * Math.PI * radius;
         }
 
-        // Get the circumference of the circles
-        let totalLength = getTotalLength(daysProgress);
+        const radius = 90;
+        const totalLength = getCircumference(radius);
 
         // Set initial stroke-dasharray for progress circles
-        function initializeCircles() {
-            [daysProgress, hoursProgress, minutesProgress, secondsProgress].forEach(circle => {
-                totalLength = getTotalLength(circle);
-                circle.style.strokeDasharray = totalLength;
-                circle.style.strokeDashoffset = totalLength;
-            });
-        }
+        [daysProgress, hoursProgress, minutesProgress, secondsProgress].forEach(circle => {
+            circle.style.strokeDasharray = totalLength;
+            circle.style.strokeDashoffset = totalLength;
+        });
 
         function updateCountdown() {
             const now = new Date().getTime();
@@ -184,20 +171,19 @@
             const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
             const minutes = Math.floor((distance / (1000 * 60)) % 60);
             const seconds = Math.floor((distance / 1000) % 60);
+
             // Update text elements
             daysElement.textContent = String(days).padStart(2, '0');
             hoursElement.textContent = String(hours).padStart(2, '0');
             minutesElement.textContent = String(minutes).padStart(2, '0');
             secondsElement.textContent = String(seconds).padStart(2, '0');
+
             // Update progress circles
-            [daysProgress, hoursProgress, minutesProgress, secondsProgress].forEach(circle => {
-                totalLength = getTotalLength(circle);
-                circle.style.strokeDasharray = totalLength;
-            });
-            const daysOffset = totalLength - (days / 2) * totalLength; // Based on 2 days
+            const daysOffset = totalLength - (days / 2) * totalLength; // Assuming 2 days
             const hoursOffset = totalLength - (hours / 24) * totalLength;
             const minutesOffset = totalLength - (minutes / 60) * totalLength;
             const secondsOffset = totalLength - (seconds / 60) * totalLength;
+
             daysProgress.style.strokeDashoffset = daysOffset;
             hoursProgress.style.strokeDashoffset = hoursOffset;
             minutesProgress.style.strokeDashoffset = minutesOffset;
@@ -205,14 +191,8 @@
         }
 
         // Initialize the countdown
-        initializeCircles();
         updateCountdown();
         const countdownInterval = setInterval(updateCountdown, 1000);
-
-        // Re-initialize circles on window resize (for responsive design)
-        window.addEventListener('resize', function() {
-            initializeCircles();
-        });
     </script>
 </body>
 </html>
