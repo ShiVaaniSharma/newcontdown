@@ -22,31 +22,62 @@
 
         .timer-container {
             display: flex;
-            gap: 5px;
+            gap: 10px;
             font-size: 1.2rem;
             font-weight: bold;
             text-align: center;
             padding: 10px;
             border-radius: 8px;
-/*             background: #000; */
-            color: #fff;
+            /* background: #000; */
+            color: #5a5a5a;
             width: 100%;
             justify-content: center;
         }
 
         .timer-box {
-            padding: 5px 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 5px;
             border-radius: 5px;
-            background: #222;
+            /* background: #a0dbdf; */
+            min-width: 50px;
+        }
+
+        .time-value {
+            background: #a0dbdf;
+            font-size: 1.5rem;
+            padding: 5px;
+            -webkit-text-stroke-width: solid black 1px;
+            -webkit-text-fill-color: rgb(66, 135, 81);
+
+        }
+
+        .time-label {
+            font-size: 0.8rem;
+            color: #045d58;
+            margin-top: 3px;
         }
     </style>
 </head>
 <body>
     <div class="timer-container">
-        <div class="timer-box"><span id="days">00</span>d</div>
-        <div class="timer-box"><span id="hours">00</span>h</div>
-        <div class="timer-box"><span id="minutes">00</span>m</div>
-        <div class="timer-box"><span id="seconds">00</span>s</div>
+        <div class="timer-box">
+            <span id="days" class="time-value">00</span>
+            <span class="time-label">Days</span>
+        </div>
+        <div class="timer-box">
+            <span id="hours" class="time-value">00</span>
+            <span class="time-label">Hours</span>
+        </div>
+        <div class="timer-box">
+            <span id="minutes" class="time-value">00</span>
+            <span class="time-label">Minutes</span>
+        </div>
+        <div class="timer-box">
+            <span id="seconds" class="time-value">00</span>
+            <span class="time-label">Seconds</span>
+        </div>
     </div>
 
     <script>
